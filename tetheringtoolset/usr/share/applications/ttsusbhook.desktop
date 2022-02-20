@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Tethering Tool Usb Hook
+Type=Application
+Categories=GNOME;GTK;Graphics;Viewer;RasterGraphics;2DGraphics;Photography;
+Icon=/usr/share/pixmaps/thetheredtoolset_tuh.png
+Exec=/usr/bin/tetheringtoolset tuh
+Terminal=true

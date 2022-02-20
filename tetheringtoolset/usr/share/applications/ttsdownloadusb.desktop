@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Tethering Tool Download usb
+Type=Application
+Categories=GNOME;GTK;Graphics;Viewer;RasterGraphics;2DGraphics;Photography;
+Icon=/usr/share/pixmaps/thetheredtoolset_du.png
+Exec=/usr/bin/tetheringtoolset du
+Terminal=true

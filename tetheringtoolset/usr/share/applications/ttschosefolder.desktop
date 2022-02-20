@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Tethering Tool Folder
+Type=Application
+Categories=GNOME;GTK;Graphics;Viewer;RasterGraphics;2DGraphics;Photography;
+Icon=/usr/share/pixmaps/thetheredtoolset_chosefolder.png
+Exec=python3 /usr/bin/chosefolder.py
+Terminal=false

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Tethering Tool Wifi Beta
+Type=Application
+Categories=GNOME;GTK;Graphics;Viewer;RasterGraphics;2DGraphics;Photography;
+Icon=/usr/share/pixmaps/thetheredtoolset_twb.png
+Exec=/usr/bin/tetheringtoolset twb
+Terminal=true

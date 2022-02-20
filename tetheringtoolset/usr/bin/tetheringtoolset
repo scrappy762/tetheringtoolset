@@ -1,0 +1,109 @@
+#!/bin/bash
+config_file="$HOME/.tts.config"
+default_folder="$HOME/TtsPictures"
+
+
+
+if ! [ -f $config_file ]; then
+  echo "$default_folder" > $config_file
+fi
+store_photos_in=$(cat $config_file)
+mkdir -p "$store_photos_in"
+
+camera_model="Nikon DSC D7200"
+camera_ip="192.168.1.1"
+
+
+tethered_wifi(){
+  echo "Conecting Tethering Tool-Set with WIFI"
+  echo "Tether photos to $store_photos_in"
+  cd "$store_photos_in" && gphoto2 --port ptpip:$camera_ip --camera="$camera_model" --capture-tethered --keep
+
+}
+tethered_wifi_beta(){
+  echo "Conecting Tethering Tool-Set with WIFI"
+  echo "Tether photos to $store_photos_in"
+  while :; do
+    counter=0
+    while ! ping -c 1 -n -w 1 $camera_ip &> /dev/null
+    do
+      ((counter++))
+      echo -ne "   $counter:  Waiting to conect to $camera_model on $camera_ip\r"
+      sleep 2
+    done
+  echo "Conecting to $camera_model on $camera_ip"
+  echo "Tether photos to $store_photos_in"
+  cd "$store_photos_in" && gphoto2 --port ptpip:$camera_ip --camera="$camera_model" --capture-tethered --keep
+done
+}
+
+tethered_wifi_hook(){
+  echo "Conecting Tethering Tool-Set with WIFI"
+  echo "Tether photos to $store_photos_in"
+  cd "$store_photos_in" && gphoto2 --port ptpip:$camera_ip --camera="$camera_model" --capture-tethered --hook-script=/usr/bin/tetheringtoolsethook --keep
+
+}
+
+tethered_usb(){
+  echo "Conecting Tethering Tool-Set with USB"
+  echo "Tether photos to $store_photos_in"
+
+  cd "$store_photos_in" && gphoto2 --capture-tethered --keep
+
+}
+tethered_usb_hook(){
+  echo "Conecting Tethering Tool-Set with USB"
+  echo "Tether photos to $store_photos_in"
+
+  cd "$store_photos_in" && gphoto2 --capture-tethered --hook-script=/usr/bin/tetheringtoolsethook --keep
+  read -p "Press enter to end "
+}
+download_wifi(){
+  while :; do
+    counter=0
+    while ! ping -c 1 -n -w 1 $camera_ip &> /dev/null
+    do
+      ((counter++))
+      echo -ne "   $counter:  Waiting to conect to $camera_ip\r"
+      sleep 2
+    done
+  echo "Conecting Tethering Tool-Set with WIFI"
+  echo "Download photos to $store_photos_in"
+  cd "$store_photos_in" && gphoto2 --port ptpip:$camera_ip "--camera=$camera_model" --get-all-files --skip-existing
+  done
+}
+
+download_usb () {
+  echo "Conecting Tethering Tool-Set with USB"
+  echo "Download photos to $store_photos_in"
+  cd "$store_photos_in" && gphoto2 --get-all-files --skip-existing
+}
+
+
+
+if [ -z "$1" ];then
+    echo "is empty"
+    exit
+else
+
+  pkill -f gphoto2
+
+  if [ $1 == "tw" ];then
+    tethered_wifi
+  elif [ $1 == "twb" ];then
+    tethered_wifi_beta
+  elif [ $1 == "twh" ];then
+    tethered_wifi_hook
+  elif [ $1 == "tu" ]; then
+    tethered_usb
+  elif [ $1 == "tuh" ]; then
+    tethered_usb_hook
+  elif [ $1 == "du" ]; then
+    download_usb
+  elif [ $1 == "dw" ]; then
+    download_wifi
+  else
+    echo "Wrong arg, exit script"
+    exit
+  fi
+fi
